@@ -2,65 +2,95 @@ package com.example.cse3310project;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.content.Intent;
 import android.widget.Toast;
+
+
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
 
-    // TODO: Temporary
-    static boolean loggedIn = false;
-
-    Button loginButton, registerButton;
-    EditText emailText, passwordText;
+    public static boolean loggedIn;
+    private TextInputEditText userNameEdit, passwordEdit;
+    public Button loginButton;
+    private ProgressBar loadingBar;
+    public TextView registerTV;
+    private FirebaseAuth mAuth;
+    public TextView forgotpassTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        setTitle("Animal Identifier: Login");
+        userNameEdit = findViewById(R.id.idEditUserName);
+        passwordEdit = findViewById(R.id.idEditPassword);
+        loginButton = findViewById(R.id.idLoginButton);
+        loadingBar = findViewById(R.id.idProgressBarLoad);
+        registerTV = findViewById(R.id.idTVRegister);
+        forgotpassTV = findViewById(R.id.idTVforgotPassword);
+        loggedIn = false;
+        mAuth = FirebaseAuth.getInstance();
+        //setTitle("Animal Identifier: Login");
 
-        emailText = findViewById(R.id.loginEmailText);
-        passwordText = findViewById(R.id.loginPasswordText);
-        loginButton = findViewById(R.id.loginButton);
-        registerButton = findViewById(R.id.registerButton);
+        registerTV.setOnClickListener(view -> {
+            Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
+            //if registration button is clicked, move to registration class
+            startActivity(i);
+        });
 
-        Bundle extra = getIntent().getExtras();
-        if(extra != null) {
-            String email = extra.getString("email");
-            emailText.setText(email);
-        }
+        forgotpassTV.setOnClickListener(v -> {
+            //To-Do: implement dialog box to enter email and send password to email from Firebase
+        });
 
         loginButton.setOnClickListener(view -> {
-            String email = emailText.getText().toString();
-            String password = passwordText.getText().toString();
 
-            // TODO: Temporary
-            Toast.makeText(this, String.format("%s %s", email, password), Toast.LENGTH_SHORT).show();
+            loadingBar.setVisibility(View.VISIBLE);
+            String userName = Objects.requireNonNull(userNameEdit.getText()).toString();
+            String password = Objects.requireNonNull(passwordEdit.getText()).toString();
 
-            // Handle checking email and password with dedicated class
-            // Switch to home activity upon successful login
+            if(TextUtils.isEmpty(userName) && TextUtils.isEmpty(password)){
+                Toast.makeText(LoginActivity.this, "Enter your information", Toast.LENGTH_SHORT).show();
+                //if username or password is empty, toast message to enter info
+            }
+            else {
+                mAuth.signInWithEmailAndPassword(userName, password).addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        loadingBar.setVisibility(View.GONE);
+                        Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(LoginActivity.this, HomeActivity.class);
+                        //if sign in with firebase is correct, notify user login is successful and go to homepage class
+                        loggedIn = true;
+                        startActivity(i);
+                        finish();
+                    }
+                    else{
+                        loadingBar.setVisibility(View.GONE);
+                        Toast.makeText(LoginActivity.this, "Login Failed"+ Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+    }
 
-            // TODO: Temporary
-            Intent i = new Intent(this, HomeActivity.class);
-            i.putExtra("email", email);
-            String name = email.split("@")[0]; // Should pull user's name from database instead
-            i.putExtra("name", name);
+    @Override
+    protected void onStart(){
+        super.onStart();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if(user != null){
+            Intent i = new Intent(LoginActivity.this, HomeActivity.class);
             startActivity(i);
             this.finish();
-        });
-
-        registerButton.setOnClickListener(view -> {
-            String email = emailText.getText().toString();
-
-            // Switch to register page
-            Intent i = new Intent(this, RegisterActivity.class);
-            // Send email, assuming one was entered, to register activity
-            i.putExtra("email", email);
-            startActivity(i);
-        });
+        }
     }
 }
