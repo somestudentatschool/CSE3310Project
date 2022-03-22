@@ -21,7 +21,7 @@ import java.util.Objects;
 public class LoginActivity extends AppCompatActivity {
 
     public static boolean loggedIn;
-    private TextInputEditText userNameEdit, passwordEdit;
+    private TextInputEditText emailEdit, passwordEdit;
     public Button loginButton;
     private ProgressBar loadingBar;
     public TextView registerTV;
@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        userNameEdit = findViewById(R.id.idEditUserName);
+        emailEdit = findViewById(R.id.idEditEmail);
         passwordEdit = findViewById(R.id.idEditPassword);
         loginButton = findViewById(R.id.idLoginButton);
         loadingBar = findViewById(R.id.idProgressBarLoad);
@@ -43,9 +43,17 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         //setTitle("Animal Identifier: Login");
 
+        Bundle extra = getIntent().getExtras();
+        if(extra != null) {
+            emailEdit.setText(extra.getString("email"));
+        }
+
         registerTV.setOnClickListener(view -> {
             Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
             //if registration button is clicked, move to registration class
+            String email = Objects.requireNonNull(emailEdit.getText()).toString();
+            if(!TextUtils.isEmpty(email))
+                i.putExtra("email", email);
             startActivity(i);
         });
 
@@ -56,15 +64,15 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(view -> {
 
             loadingBar.setVisibility(View.VISIBLE);
-            String userName = Objects.requireNonNull(userNameEdit.getText()).toString();
+            String email = Objects.requireNonNull(emailEdit.getText()).toString();
             String password = Objects.requireNonNull(passwordEdit.getText()).toString();
 
-            if(TextUtils.isEmpty(userName) && TextUtils.isEmpty(password)){
+            if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password)){
                 Toast.makeText(LoginActivity.this, "Enter your information", Toast.LENGTH_SHORT).show();
                 //if username or password is empty, toast message to enter info
             }
             else {
-                mAuth.signInWithEmailAndPassword(userName, password).addOnCompleteListener(task -> {
+                mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
                         loadingBar.setVisibility(View.GONE);
                         Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
@@ -76,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                     else{
                         loadingBar.setVisibility(View.GONE);
-                        Toast.makeText(LoginActivity.this, "Login Failed"+ Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Login Failed, "+ Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
             }
