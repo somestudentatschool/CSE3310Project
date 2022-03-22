@@ -8,32 +8,32 @@
     tools:context=".RegisterActivity">
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/idTempEmail"
+        style="@style/TextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/idTempUserName"
         android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
         android:layout_marginTop="140dp"
-        android:hint="Enter User Name"
-        style="@style/TextInputLayout"
+        android:layout_marginEnd="20dp"
+        android:hint="Enter Email"
         android:padding="5dp"
         android:textColorHint="@color/white"
         app:hintTextColor="@color/white">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/idEditEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/idEditUserName"
             android:importantForAutofill="no"
             android:inputType="textEmailAddress"
             android:textColor="@color/white"
-            android:textSize="14sp"/>
+            android:textSize="14sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/idTempPassword"
-        android:layout_below="@id/idTempUserName"
+        android:layout_below="@id/idTempEmail"
         style="@style/TextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -109,6 +109,7 @@
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="18sp" />
+
     <TextView
         android:id="@+id/RegisterText"
         android:layout_width="match_parent"
@@ -116,13 +117,13 @@
         android:layout_above="@id/idTempPassword"
         android:layout_marginTop="30dp"
         android:layout_marginBottom="80dp"
+        android:fontFamily="sans-serif-black"
         android:gravity="center"
         android:text="Account Registration"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textSize="32sp"
-        android:fontFamily="sans-serif-black"/>
+        android:textSize="32sp" />
 
     <ProgressBar
         android:layout_width="wrap_content"

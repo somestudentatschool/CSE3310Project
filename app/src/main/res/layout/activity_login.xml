@@ -8,35 +8,35 @@
     tools:context=".LoginActivity">
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/idTempEmail"
+        style="@style/TextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/idTempUserName"
         android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
         android:layout_marginTop="140dp"
+        android:layout_marginEnd="20dp"
         android:hint="Enter Email"
-        style="@style/TextInputLayout"
         android:padding="5dp"
         android:textColorHint="@color/white"
         app:hintTextColor="@color/white"
         tools:ignore="ExtraText">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/idEditEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/idEditUserName"
             android:importantForAutofill="no"
             android:inputType="textEmailAddress"
             android:textColor="@color/white"
-            android:textSize="14sp"/>
-            /* app:startIconDrawable */
+            android:textSize="14sp" />
+        /* app:startIconDrawable */
 
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/idTempPassword"
-        android:layout_below="@id/idTempUserName"
+        android:layout_below="@id/idTempEmail"
         style="@style/TextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

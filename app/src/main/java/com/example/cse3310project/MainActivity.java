@@ -23,8 +23,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             // Goto home page
             i = new Intent(this, HomeActivity.class);
-            i.putExtra("email", "your_email");
-            i.putExtra("name", "your_name");
         }
         startActivity(i);
         this.finish();
