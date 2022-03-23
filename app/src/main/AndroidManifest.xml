@@ -6,7 +6,7 @@
     
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    //"https://www.flaticon.com/free-icons/dog" title="dog icons">Dog icons created by monkik - Flaticon
+    <uses-permission android:name="android.permission.CAMERA"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_shiba"
