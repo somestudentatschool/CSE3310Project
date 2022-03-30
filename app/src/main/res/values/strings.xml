@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CSE3310Project</string>
+    <string name="camera">Camera</string>
 </resources>
