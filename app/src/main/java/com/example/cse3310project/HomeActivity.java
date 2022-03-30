@@ -47,7 +47,8 @@ public class HomeActivity extends AppCompatActivity {
 
         uploadFromCameraButton.setOnClickListener(view -> {
             // Open camera, get image uri, save to temporary file
-            Toast.makeText(this, "TODO: Implement this", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(this, CameraActivity.class);
+            startActivity(i);
         });
 
         uploadFromGalleryButton.setOnClickListener(view -> {
