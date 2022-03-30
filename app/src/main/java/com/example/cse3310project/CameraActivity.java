@@ -65,10 +65,13 @@ public class CameraActivity extends AppCompatActivity {
             int pixel = 0;
             for(int i = 0; i < size; i++) //RGB values
             {
-                int value = intVal[pixel++];
-                byteBuffer.putFloat(((value >> 16) & 0xFF) *(1.f/255.f));
-                byteBuffer.putFloat(((value >> 8) & 0xFF) *(1.f/255.f));
-                byteBuffer.putFloat((value & 0xFF) *(1.f/255.f));
+                for(int j = 0; j < size; j++)
+                {
+                    int value = intVal[pixel++];
+                    byteBuffer.putFloat(((value >> 16) & 0xFF) * (1.f / 255.f));
+                    byteBuffer.putFloat(((value >> 8) & 0xFF) * (1.f / 255.f));
+                    byteBuffer.putFloat((value & 0xFF) * (1.f / 255.f));
+                }
             }
             inputFeature0.loadBuffer(byteBuffer);
 
@@ -91,6 +94,12 @@ public class CameraActivity extends AppCompatActivity {
             String[] breeds = {"Labrador", "Pitbull", "German Shepard", "Chihuahua", "Golden Retriever"}; //same as animals
             animal.setText(animals[0]);
             breed.setText(breeds[maxP]);
+
+            for(int i = 0; i < breeds.length; i++) //prints confidences into logcat
+            {
+                System.out.println(breeds[i]+"= "+confidence[i]*100);
+            }
+
             // Releases model resources if no longer used.
             model.close();
         } catch (IOException e) {
