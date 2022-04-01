@@ -24,7 +24,7 @@ import java.nio.ByteOrder;
 import android.os.Bundle;
 
 public class CameraActivity extends AppCompatActivity {
-    Button button; //take picture button
+    Button button, home; //take picture button
     ImageView camView; //image of picture taken
     TextView animal, breed; //for text of animal and breed
     private final int size = 224;
@@ -37,6 +37,12 @@ public class CameraActivity extends AppCompatActivity {
         button = findViewById(R.id.pictureButton);
         breed = findViewById(R.id.breed);
         animal = findViewById(R.id.animal);
+        home = findViewById(R.id.homeButtonCamera);
+
+        home.setOnClickListener(view -> {
+            Intent i = new Intent(this, HomeActivity.class);
+            startActivity(i);
+        });
 
         button.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M) //fixes an issue with minimum API being too low
