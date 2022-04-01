@@ -25,6 +25,15 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".AnimalActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".HomeActivity"
             android:exported="false" />
         <activity
@@ -32,6 +41,9 @@
             android:exported="false" />
         <activity
             android:name=".ViewProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AnimalInfo"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
