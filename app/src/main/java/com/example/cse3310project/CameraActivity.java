@@ -7,6 +7,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.media.ThumbnailUtils;
 import android.os.Build;
 import android.os.Bundle;
@@ -50,7 +51,7 @@ public class CameraActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                     Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(cameraIntent, 1); //will change later in the following month
+                    startActivityForResult(cameraIntent, 1);
                 }
                 else
                 {
@@ -59,27 +60,27 @@ public class CameraActivity extends AppCompatActivity {
             }
         });
     }
-    public void imgClassify(Bitmap image)
+    public void classify(Bitmap image)
     {
         try {
+            image = Bitmap.createScaledBitmap(image, size, size, false);
             ModelUnquant model = ModelUnquant.newInstance(getApplicationContext());
 
             // Creates inputs for reference.
             TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, DataType.FLOAT32);
             ByteBuffer byteBuffer = ByteBuffer.allocateDirect(4*size*size*3);
             byteBuffer.order(ByteOrder.nativeOrder());
-
-            int[] intVal = new int[size*size];
-            image.getPixels(intVal, 0, image.getWidth(),0,0,image.getWidth(),image.getHeight());
-            int pixel = 0;
-            for(int i = 0; i < size; i++) //RGB values
+            int[] pixelVal = new int[size*size]; //pixels for RGB values; got code from link below
+            image.getPixels(pixelVal, 0, image.getWidth(),0,0,image.getWidth(),image.getHeight()); //pixels for RGB values; got code from link below
+            int numPixel = 0; //pixels for RGB values; got code from link below
+            for(int i = 0; i < size; i++) //RGB values; got this code from https://stackoverflow.com/questions/55777086/converting-bitmap-to-bytebuffer-float-in-tensorflow-lite-android
             {
                 for(int j = 0; j < size; j++)
                 {
-                    int value = intVal[pixel++];
-                    byteBuffer.putFloat(((value >> 16) & 0xFF) * (1.f / 255.f));
-                    byteBuffer.putFloat(((value >> 8) & 0xFF) * (1.f / 255.f));
-                    byteBuffer.putFloat((value & 0xFF) * (1.f / 255.f));
+                    int value = pixelVal[numPixel++];
+                    byteBuffer.putFloat(((value >> 16) & 0xFF) / 255.f); //formulas for RGB values for bytebuffer; code from link above
+                    byteBuffer.putFloat(((value >> 8) & 0xFF) / 255.f);
+                    byteBuffer.putFloat((value & 0xFF) / 255.f);
                 }
             }
             inputFeature0.loadBuffer(byteBuffer);
@@ -88,21 +89,21 @@ public class CameraActivity extends AppCompatActivity {
             ModelUnquant.Outputs outputs = model.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
+            int maxBreed = 0;
+            float maxConfidencePercent = 0;
             float[] confidence = outputFeature0.getFloatArray();
-            int maxP = 0;
-            float maxConfidence = 0;
-            for(int i = 0; i < confidence.length; i++) //gets confidence for each breed
+            for(int i = 0; i < confidence.length; i++) //gets max confidence
             {
-                if(confidence[i] > maxConfidence)
+                if(confidence[i] > maxConfidencePercent) //if confidence percent at i is greater than store percent, then it is replaced with new percent
                 {
-                    maxConfidence = confidence[i];
-                    maxP = i;
+                    maxConfidencePercent = confidence[i]; //changes max breed percent
+                    maxBreed = i; //index of maximum breed percent
                 }
             }
             String[] animals = {"Dog"}; //will assign more animals as the model is trained
             String[] breeds = {"Labrador", "Pitbull", "German Shepard", "Chihuahua", "Golden Retriever"}; //same as animals
             animal.setText(animals[0]);
-            breed.setText(breeds[maxP]);
+            breed.setText(breeds[maxBreed]);
 
             for(int i = 0; i < breeds.length; i++) //prints confidences into logcat
             {
@@ -119,12 +120,9 @@ public class CameraActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == 1 && resultCode == RESULT_OK)
         {
-            Bitmap img = (Bitmap) data.getExtras().get("data");
-            int dim = Math.min(img.getWidth(), img.getHeight());
-            img = ThumbnailUtils.extractThumbnail(img, dim, dim);
-            camView.setImageBitmap(img);
-            img = Bitmap.createScaledBitmap(img, size, size, false); //shows the image taken
-            imgClassify(img); //classifies image
+            Bitmap pic = (Bitmap) data.getExtras().get("data");
+            camView.setImageBitmap(pic); //shows the image taken
+            classify(pic); //classifies image taken
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
