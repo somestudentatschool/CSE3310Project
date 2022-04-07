@@ -1,5 +1,9 @@
 package com.example.cse3310project;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,8 +11,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.media.ThumbnailUtils;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -28,7 +30,9 @@ public class CameraActivity extends AppCompatActivity {
     Button button, home; //take picture button
     ImageView camView; //image of picture taken
     TextView animal, breed; //for text of animal and breed
-    private final int size = 224;
+    ActivityResultLauncher<Intent> launcher;
+    private final int size = 224; //size from model
+    private int picturesTaken = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,13 +49,35 @@ public class CameraActivity extends AppCompatActivity {
             startActivity(i);
         });
 
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null)
+                {
+                    Bundle data = result.getData().getExtras();
+                    Bitmap pic =  (Bitmap) data.get("data");
+                    camView.setImageBitmap(pic); //shows the image taken
+                    picturesTaken++;
+                    if(picturesTaken > 0)
+                    {
+                        button.setText("Retake Picture");
+                    }
+                    classify(pic); //classifies image taken
+                }
+                else
+                {
+                    System.out.println("Something went wrong with the result codes");
+                }
+            }
+        });
+
         button.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M) //fixes an issue with minimum API being too low
             @Override
             public void onClick(View view) {
                 if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                     Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(cameraIntent, 1);
+                    launcher.launch(cameraIntent);
                 }
                 else
                 {
@@ -59,10 +85,8 @@ public class CameraActivity extends AppCompatActivity {
                 }
             }
         });
-
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(cameraIntent, 1);
     }
+
     public void classify(Bitmap image)
     {
         try {
@@ -118,15 +142,5 @@ public class CameraActivity extends AppCompatActivity {
         } catch (IOException e) {
             System.out.println("Something went wrong with model");
         }
-    }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == 1 && resultCode == RESULT_OK)
-        {
-            Bitmap pic = (Bitmap) data.getExtras().get("data");
-            camView.setImageBitmap(pic); //shows the image taken
-            classify(pic); //classifies image taken
-        }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 }
