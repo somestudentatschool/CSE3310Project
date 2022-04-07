@@ -59,6 +59,9 @@ public class CameraActivity extends AppCompatActivity {
                 }
             }
         });
+
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, 1);
     }
     public void classify(Bitmap image)
     {
