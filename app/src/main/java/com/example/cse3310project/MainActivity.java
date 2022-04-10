@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -14,18 +16,8 @@ public class MainActivity extends AppCompatActivity {
 
         setTitle("Animal Identifier");
 
-        // The boolean "loggedIn" is a placeholder. Will likely need to check with
-        // a backend class to see if we are logged in
-        Intent i;
-        if(!LoginActivity.loggedIn) {
-            // Switch to login activity
-            i = new Intent(this, LoginActivity.class);
-        } else {
-            // Goto home page
-            i = new Intent(this, HomeActivity.class);
-        }
+        Intent i = new Intent(this, LoginActivity.class);
         startActivity(i);
         this.finish();
-
     }
 }
