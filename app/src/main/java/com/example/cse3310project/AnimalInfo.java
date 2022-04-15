@@ -1,12 +1,10 @@
 package com.example.cse3310project;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.content.Intent;
 import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class AnimalInfo extends AppCompatActivity {
     Button btn_goAnimalData;
@@ -17,12 +15,9 @@ public class AnimalInfo extends AppCompatActivity {
 
         btn_goAnimalData = findViewById(R.id.btn_goAnimalData);
 
-        btn_goAnimalData.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                //Toast.makeText(AnimalActivity.this, "Viewed", Toast.LENGTH_SHORT).show();
-                openAnimalActivity();
-            }
+        btn_goAnimalData.setOnClickListener(v -> {
+            //Toast.makeText(AnimalActivity.this, "Viewed", Toast.LENGTH_SHORT).show();
+            openAnimalActivity();
         });
 
     }

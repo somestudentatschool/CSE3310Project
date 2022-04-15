@@ -1,38 +1,36 @@
 package com.example.cse3310project;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.cse3310project.ml.ModelUnquant;
+
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import android.os.Bundle;
 
 public class CameraActivity extends AppCompatActivity {
     Button button, home; //take picture button
     ImageView camView; //image of picture taken
     TextView animal, breed; //for text of animal and breed
     ActivityResultLauncher<Intent> launcher;
-    private final int size = 224; //size from model
     private int picturesTaken = 0;
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,40 +47,34 @@ public class CameraActivity extends AppCompatActivity {
             startActivity(i);
         });
 
-        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-            @Override
-            public void onActivityResult(ActivityResult result) {
-                if (result.getResultCode() == RESULT_OK && result.getData() != null)
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == RESULT_OK && result.getData() != null)
+            {
+                Bundle data = result.getData().getExtras();
+                Bitmap pic =  (Bitmap) data.get("data");
+                camView.setImageBitmap(pic); //shows the image taken
+                picturesTaken++;
+                if(picturesTaken > 0)
                 {
-                    Bundle data = result.getData().getExtras();
-                    Bitmap pic =  (Bitmap) data.get("data");
-                    camView.setImageBitmap(pic); //shows the image taken
-                    picturesTaken++;
-                    if(picturesTaken > 0)
-                    {
-                        button.setText("Retake Picture");
-                    }
-                    classify(pic); //classifies image taken
+                    button.setText("Retake Picture");
                 }
-                else
-                {
-                    System.out.println("Something went wrong with the result codes");
-                }
+                classify(pic); //classifies image taken
+            }
+            else
+            {
+                System.out.println("Something went wrong with the result codes");
             }
         });
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M) //fixes an issue with minimum API being too low
-            @Override
-            public void onClick(View view) {
-                if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    launcher.launch(cameraIntent);
-                }
-                else
-                {
-                    requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
-                }
+        //fixes an issue with minimum API being too low
+        button.setOnClickListener(view -> {
+            if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                launcher.launch(cameraIntent);
+            }
+            else
+            {
+                requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
             }
         });
     }
@@ -90,14 +82,16 @@ public class CameraActivity extends AppCompatActivity {
     public void classify(Bitmap image)
     {
         try {
+            //size from model
+            int size = 224;
             image = Bitmap.createScaledBitmap(image, size, size, false);
             ModelUnquant model = ModelUnquant.newInstance(getApplicationContext());
 
             // Creates inputs for reference.
             TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, DataType.FLOAT32);
-            ByteBuffer byteBuffer = ByteBuffer.allocateDirect(4*size*size*3);
+            ByteBuffer byteBuffer = ByteBuffer.allocateDirect(4* size * size *3);
             byteBuffer.order(ByteOrder.nativeOrder());
-            int[] pixelVal = new int[size*size]; //pixels for RGB values; got code from link below
+            int[] pixelVal = new int[size * size]; //pixels for RGB values; got code from link below
             image.getPixels(pixelVal, 0, image.getWidth(),0,0,image.getWidth(),image.getHeight()); //pixels for RGB values; got code from link below
             int numPixel = 0; //pixels for RGB values; got code from link below
             for(int i = 0; i < size; i++) //RGB values; got this code from https://stackoverflow.com/questions/55777086/converting-bitmap-to-bytebuffer-float-in-tensorflow-lite-android

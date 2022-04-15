@@ -1,8 +1,6 @@
 package com.example.cse3310project;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +19,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class HomeFragment extends Fragment {
 
-    private TextView helloTextView;
-    private Button uploadFromGalleryButton, uploadFromCameraButton, openProfileButton;
-    private FirebaseAuth mAuth;
+    public HomeFragment() {
+    }
 
     @Nullable
     @Override
@@ -31,14 +28,14 @@ public class HomeFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        helloTextView = view.findViewById(R.id.helloTextView);
-        uploadFromGalleryButton = view.findViewById(R.id.uploadFromGalleryButton);
-        uploadFromCameraButton = view.findViewById(R.id.uploadFromCameraButton);
+        TextView helloTextView = view.findViewById(R.id.helloTextView);
+        Button uploadFromGalleryButton = view.findViewById(R.id.uploadFromGalleryButton);
+        Button uploadFromCameraButton = view.findViewById(R.id.uploadFromCameraButton);
 
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         FragmentActivity activity = requireActivity();
@@ -50,8 +47,9 @@ public class HomeFragment extends Fragment {
             activity.finish();
         }
 
-        final String email = currentUser.getEmail();
-        final String name = email.split("@")[0];
+        ProfileFragment pf = new ProfileFragment();
+        String name = pf.getProf_username();
+
         helloTextView.setText(String.format("Hello, %s!", name));
 
         uploadFromCameraButton.setOnClickListener(view2 -> {
