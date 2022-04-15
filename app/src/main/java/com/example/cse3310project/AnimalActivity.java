@@ -1,8 +1,6 @@
 package com.example.cse3310project;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,8 +9,6 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.util.List;
 
 public class AnimalActivity extends AppCompatActivity {
     Button btn_addAnimal, btn_viewAllAnimals, btn_viewAnimal;
@@ -42,9 +38,7 @@ public class AnimalActivity extends AppCompatActivity {
 
         ShowAllAnimalView(animalDataHelper);
 
-        btn_addAnimal.setOnClickListener(new View.OnClickListener(){
-        @Override
-        public void onClick(View v){
+        btn_addAnimal.setOnClickListener(v -> {
             AnimalModel animalModel;
 
             try {
@@ -62,47 +56,37 @@ public class AnimalActivity extends AppCompatActivity {
             Toast.makeText(AnimalActivity.this, "Success " + success, Toast.LENGTH_SHORT).show();
 
             ShowAllAnimalView(animalDataHelper);
-        }
+        });
+
+    btn_viewAnimal.setOnClickListener(v -> {
+
+
+
+        //Toast.makeText(AnimalActivity.this, dAnimal.toString(), Toast.LENGTH_SHORT).show();
+        openAnimalData();
+        });
+
+    btn_viewAllAnimals.setOnClickListener(v -> {
+
+        animalDataHelper = new AnimalDataHelper(AnimalActivity.this);
+
+        ShowAllAnimalView(animalDataHelper);
+
+        //Toast.makeText(AnimalActivity.this, all.toString(), Toast.LENGTH_SHORT).show();
     });
 
-    btn_viewAnimal.setOnClickListener(new View.OnClickListener(){
-        @Override
-        public void onClick(View v){
-
-
-
-            //Toast.makeText(AnimalActivity.this, dAnimal.toString(), Toast.LENGTH_SHORT).show();
-            openAnimalData();
-            }
-    });
-
-    btn_viewAllAnimals.setOnClickListener(new View.OnClickListener(){
-        @Override
-        public void onClick(View v){
-
-            animalDataHelper = new AnimalDataHelper(AnimalActivity.this);
-
-            ShowAllAnimalView(animalDataHelper);
-
-            //Toast.makeText(AnimalActivity.this, all.toString(), Toast.LENGTH_SHORT).show();
-        }
-    });
-
-    lv_animalList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            AnimalModel animalClicked = (AnimalModel) adapterView.getItemAtPosition(i);
-            animalDataHelper.deleteOne(animalClicked);
-            ShowAllAnimalView(animalDataHelper);
-            Toast.makeText(AnimalActivity.this, "Deleted " + animalClicked.toString(), Toast.LENGTH_SHORT).show();
-        }
+    lv_animalList.setOnItemClickListener((adapterView, view, i, l) -> {
+        AnimalModel animalClicked = (AnimalModel) adapterView.getItemAtPosition(i);
+        animalDataHelper.deleteOne(animalClicked);
+        ShowAllAnimalView(animalDataHelper);
+        Toast.makeText(AnimalActivity.this, "Deleted " + animalClicked, Toast.LENGTH_SHORT).show();
     });
 
 
     }
 
     private void ShowAllAnimalView(AnimalDataHelper animalDataHelper2) {
-        animalArrayAdapter = new ArrayAdapter<AnimalModel>(AnimalActivity.this, android.R.layout.simple_list_item_1, animalDataHelper2.getAllAnimals());
+        animalArrayAdapter = new ArrayAdapter<>(AnimalActivity.this, android.R.layout.simple_list_item_1, animalDataHelper2.getAllAnimals());
         lv_animalList.setAdapter(animalArrayAdapter);
     }
 

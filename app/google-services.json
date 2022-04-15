@@ -1,20 +1,29 @@
 {
   "project_info": {
-    "project_number": "1079542252830",
-    "project_id": "cse3310project-8effd",
-    "storage_bucket": "cse3310project-8effd.appspot.com"
+    "project_number": "964712033988",
+    "firebase_url": "https://cse3310project-37246-default-rtdb.firebaseio.com",
+    "project_id": "cse3310project-37246",
+    "storage_bucket": "cse3310project-37246.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1079542252830:android:36f462a648962f7888f50f",
+        "mobilesdk_app_id": "1:964712033988:android:e1188e527dc7d033ebe391",
         "android_client_info": {
           "package_name": "com.example.cse3310project"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1079542252830-h2se2aecn5hufoih9uprkbvg5ij9t45f.apps.googleusercontent.com",
+          "client_id": "964712033988-tu7pom076sjt0hj8g2pgc7065gbco9pp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cse3310project",
+            "certificate_hash": "62c03d404448ebd4228d1992f2692a0a92ad254b"
+          }
+        },
+        {
+          "client_id": "964712033988-e7kkmj487kuu5g29mn1r49tl9oubiarj.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,7 +36,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1079542252830-h2se2aecn5hufoih9uprkbvg5ij9t45f.apps.googleusercontent.com",
+              "client_id": "964712033988-e7kkmj487kuu5g29mn1r49tl9oubiarj.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -1,5 +1,6 @@
 package com.example.cse3310project;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -49,24 +50,16 @@ public class AnimalDataHelper extends SQLiteOpenHelper{
         cv.put(COLUMN_DESCRIPTION, animalModel.getaDescription());
 
         long insert = db.insert(ANIMAL_TABLE, null, cv);
-        if(insert == -1)
-            return false;
-        else
-            return true;
+        return insert != -1;
     }
 
-    public boolean deleteOne(AnimalModel animalModel){
+    public void deleteOne(AnimalModel animalModel){
         SQLiteDatabase db = this.getWritableDatabase();
         String queryString = "DELETE FROM " + ANIMAL_TABLE + " WHERE " + COLUMN_ID + " = " + animalModel.getId();
 
-        Cursor cursor = db.rawQuery(queryString, null);
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(queryString, null);
 
-        if(cursor.moveToFirst()){
-            return true;
-        }
-        else{
-            return false;
-        }
+        cursor.moveToFirst();
     }
 
     public List<AnimalModel> getAllAnimals(){
@@ -90,10 +83,6 @@ public class AnimalDataHelper extends SQLiteOpenHelper{
                 animalList.add(newAnimal);
 
             } while(cursor.moveToNext());
-        }
-
-        else{
-
         }
 
         cursor.close();
