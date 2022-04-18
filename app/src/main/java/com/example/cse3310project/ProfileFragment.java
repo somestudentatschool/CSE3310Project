@@ -16,7 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -35,7 +34,6 @@ public class ProfileFragment extends Fragment {
     Button signOutButton, updateButton;
     private ProgressBar loadingBar;
     final Calendar myCalendar= Calendar.getInstance();
-    TextInputEditText editText;
     DatabaseReference root = FirebaseDatabase.getInstance().getReference("Users");
 
     @Nullable
@@ -59,7 +57,8 @@ public class ProfileFragment extends Fragment {
             myCalendar.set(Calendar.DAY_OF_MONTH,day);
             modifyDob();
         };
-        editText.setOnClickListener(view12 -> new DatePickerDialog(getActivity(),date,myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show());
+        dateOfBirthText.setOnClickListener(view12 -> new DatePickerDialog(getActivity(),date,myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show());
+        //issue here, tested for commit as working
         //loadingBar = (ProgressBar) findViewById(R.id.idProgressBarProf); add loading bar later
 
         if (currentUser == null) {
@@ -95,8 +94,6 @@ public class ProfileFragment extends Fragment {
 
     private void showProfileData() {
 
-        System.out.println("Prof_username is null");
-
         userProfileHeader.setText(prof_username);
         fullNameText.setText(prof_fullname);
         dateOfBirthText.setText(prof_dob);
@@ -121,7 +118,7 @@ public class ProfileFragment extends Fragment {
         }*/
         //password can be changed through login screen
         else{
-            Toast.makeText(getActivity(), "Profile data cannot be updated.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Profile data cannot be updated more than once per login.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -151,7 +148,7 @@ public class ProfileFragment extends Fragment {
                     }
                     else {
                         //snapshot does not exist
-                        Toast.makeText(getActivity(), "Snapshot of DB does not exist ", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Snapshot of DB does not exist(username) ", Toast.LENGTH_LONG).show();
                     }
 
                 }
@@ -190,7 +187,7 @@ public class ProfileFragment extends Fragment {
                     }
                     else {
                         //snapshot does not exist
-                        Toast.makeText(getActivity(), "Snapshot of DB does not exist ", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Snapshot of DB does not exist (FullName)", Toast.LENGTH_LONG).show();
                     }
 
                 }
@@ -208,7 +205,7 @@ public class ProfileFragment extends Fragment {
 
         String myFormat="MM/dd/yy";
         SimpleDateFormat dateFormat=new SimpleDateFormat(myFormat, Locale.US);
-        editText.setText(dateFormat.format(myCalendar.getTime()));
+        dateOfBirthText.setText(dateFormat.format(myCalendar.getTime()));
         //use datepicker to choose value, then register it in RTDB
 
         if (!prof_dob.equals(dateOfBirthText.getText().toString())){
@@ -233,7 +230,7 @@ public class ProfileFragment extends Fragment {
                     }
                     else {
                         //snapshot does not exist
-                        Toast.makeText(getActivity(), "Snapshot of DB does not exist ", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Snapshot of DB does not exist(dob) ", Toast.LENGTH_LONG).show();
                     }
 
                 }
@@ -272,15 +269,15 @@ public class ProfileFragment extends Fragment {
         prof_fullname = str;
     }
 
-        /*@Override
-    public void onDestroy(){
+    /*@Override
+    public void onDestroy() {
         super.onDestroy();
         FirebaseAuth.getInstance().signOut();
         Intent i = new Intent(getContext(), LoginActivity.class);
         startActivity(i);
         getActivity().finish();
-        To be implemented, currently when a user swipes out their info in firebase database
-        is reset and their DB info cannot be accessed*/
+
+    }*/
 
 }
 
