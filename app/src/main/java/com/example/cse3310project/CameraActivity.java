@@ -10,23 +10,19 @@ import android.provider.MediaStore;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.cse3310project.ml.ModelUnquant;
-
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
-
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 public class CameraActivity extends AppCompatActivity {
-    Button button, home; //take picture button
-    ImageView camView; //image of picture taken
+    Button button, home; //take pic button
+    ImageView camView; //image of pic taken
     TextView animal, breed; //for text of animal and breed
     ActivityResultLauncher<Intent> launcher;
     private int picturesTaken = 0;
