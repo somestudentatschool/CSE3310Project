@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.widget.Button;
@@ -49,15 +50,21 @@ public class GalleryActivity extends AppCompatActivity
         launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK && result.getData() != null)
             {
-                Bundle data = result.getData().getExtras();
-                Bitmap pic =  (Bitmap) data.get("data");
-                picView.setImageBitmap(pic); //shows the image taken
-                numUploads++;
-                if(numUploads > 0)
-                {
-                    button.setText("Reupload Picture");
+                try {
+                    Uri data = result.getData().getData();
+                    Bitmap pic = null;
+                    pic = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data); //changes URI to bitmap
+
+                    picView.setImageBitmap(pic); //shows the image uploaded
+                    numUploads++;
+                    if (numUploads > 0) {
+                        button.setText("Reupload Picture");
+                    }
+                    classify(pic); //classifies image uploaded
                 }
-                classify(pic); //classifies image taken
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             else
             {
@@ -136,6 +143,7 @@ public class GalleryActivity extends AppCompatActivity
             model.close();
         } catch (IOException e) {
             System.out.println("Something went wrong with model");
+            e.printStackTrace();
         }
     }
 }
