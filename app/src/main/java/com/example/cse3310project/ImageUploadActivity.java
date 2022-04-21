@@ -11,8 +11,10 @@ import android.provider.MediaStore;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.cse3310project.ml.ModelUnquant;
 import org.tensorflow.lite.DataType;
@@ -21,44 +23,46 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-public class GalleryActivity extends AppCompatActivity
+public class ImageUploadActivity extends AppCompatActivity
 {
-    Button button, home; //take picture button
+    public static final int GALLERY_CODE = 100;
+    public static final int CAMERA_CODE = 101;
+
+    Button galleryButton, cameraButton, home; //take picture button
     ImageView picView; //image of picture taken
     TextView animal, breed; //for text of animal and breed
-    ActivityResultLauncher<Intent> launcher;
-    private int numUploads = 0;
+    private ActivityResultLauncher<Intent> cameraLauncher, galleryLauncher;
+    private boolean uploadedFirstImage = false, takenFirstImage = false;
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gallery_upload);
+        setContentView(R.layout.activity_image_upload);
         setTitle("Gallery Upload");
         picView = findViewById(R.id.myImage);
-        button = findViewById(R.id.uploadButton);
+        galleryButton = findViewById(R.id.uploadButton);
+        cameraButton = findViewById(R.id.pictureButton);
         breed = findViewById(R.id.breed);
         animal = findViewById(R.id.animal);
         home = findViewById(R.id.homeButtonCamera);
+
 
         home.setOnClickListener(view -> {
             Intent i = new Intent(this, HomeActivity.class);
             startActivity(i);
         });
 
-        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        galleryLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK && result.getData() != null)
             {
                 try {
                     Uri data = result.getData().getData();
-                    Bitmap pic = null;
-                    pic = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data); //changes URI to bitmap
+                    Bitmap pic = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data); //changes URI to bitmap
 
                     picView.setImageBitmap(pic); //shows the image uploaded
-                    numUploads++;
-                    if (numUploads > 0) {
-                        button.setText("Reupload Picture");
+                    if (!uploadedFirstImage) {
+                        uploadedFirstImage = true;
+                        galleryButton.setText("Reupload Picture");
                     }
                     classify(pic); //classifies image uploaded
                 }
@@ -72,19 +76,78 @@ public class GalleryActivity extends AppCompatActivity
             }
         });
 
+        cameraLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == RESULT_OK && result.getData() != null)
+            {
+                Bundle data = result.getData().getExtras();
+                Bitmap pic =  (Bitmap) data.get("data");
+                picView.setImageBitmap(pic); //shows the image taken
+                if(!takenFirstImage)
+                {
+                    takenFirstImage = true;
+                    cameraButton.setText("Retake Picture");
+                }
+                classify(pic); //classifies image taken
+            }
+            else
+            {
+                System.out.println("Something went wrong with the result codes");
+            }
+        });
+
         //fixes an issue with minimum API being too low
-        button.setOnClickListener(view -> {
+        galleryButton.setOnClickListener(view -> {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 Intent picIntent = new Intent();
                 picIntent.setType("image/*");
                 picIntent.setAction(Intent.ACTION_GET_CONTENT);
-                launcher.launch(picIntent);
+                galleryLauncher.launch(picIntent);
             }
             else
             {
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, GALLERY_CODE);
             }
         });
+
+        cameraButton.setOnClickListener(view -> {
+            if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                cameraLauncher.launch(cameraIntent);
+            }
+            else
+            {
+                requestPermissions(new String[]{Manifest.permission.CAMERA}, CAMERA_CODE);
+            }
+        });
+
+        Bundle extra = getIntent().getExtras();
+        if(extra != null) {
+            String launch = extra.getString("launch", "");
+            switch(launch) {
+                case "camera":
+                    cameraButton.performClick();
+                    break;
+                case "gallery":
+                    galleryButton.performClick();
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        for(int r : grantResults) {
+            if (r == PackageManager.PERMISSION_DENIED) {
+                this.finish();
+                return;
+            }
+        }
+        if(requestCode == GALLERY_CODE) {
+            galleryButton.performClick();
+        } else if(requestCode == CAMERA_CODE) {
+            cameraButton.performClick();
+        }
     }
 
     public void classify(Bitmap image)

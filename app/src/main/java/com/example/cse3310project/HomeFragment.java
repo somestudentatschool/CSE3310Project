@@ -54,13 +54,15 @@ public class HomeFragment extends Fragment {
 
         uploadFromCameraButton.setOnClickListener(view2 -> {
             // Open camera activity
-            Intent i = new Intent(activity, CameraActivity.class);
+            Intent i = new Intent(activity, ImageUploadActivity.class);
+            i.putExtra("launch", "camera");
             startActivity(i);
         });
 
         uploadFromGalleryButton.setOnClickListener(v -> {
             // Open gallery activity
-            Intent i = new Intent(activity, GalleryActivity.class);
+            Intent i = new Intent(activity, ImageUploadActivity.class);
+            i.putExtra("launch", "gallery");
             startActivity(i);
         });
     }
