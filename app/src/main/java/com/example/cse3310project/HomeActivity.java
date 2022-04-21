@@ -61,7 +61,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @SuppressLint("NonConstantResourceId")
-    private NavigationBarView.OnItemSelectedListener navListener = item -> {
+    private final NavigationBarView.OnItemSelectedListener navListener = item -> {
         Fragment selected;
         switch(item.getItemId()) {
             case R.id.nav_profile:
