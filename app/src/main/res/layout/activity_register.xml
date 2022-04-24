@@ -13,10 +13,10 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/idTempPassword"
         android:layout_marginTop="30dp"
-        android:layout_marginBottom="160dp"
+        android:layout_marginBottom="180dp"
+        android:fontFamily="@font/poppins_bold"
         android:gravity="center"
         android:text="Account Registration"
-        android:fontFamily="@font/poppins_bold"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@color/white"
@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="150dp"
         android:layout_marginEnd="20dp"
         android:hint="Enter Username"
         android:padding="5dp"
@@ -39,12 +39,12 @@
             android:id="@+id/idEditUser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_baseline_person_24"
+            android:fontFamily="@font/poppins_bold"
             android:importantForAutofill="no"
             android:inputType="textEmailAddress"
             android:textColor="@color/white"
-            android:textSize="14sp"
-            android:drawableStart="@drawable/ic_baseline_person_24"
-            android:fontFamily="@font/poppins_bold"/>
+            android:textSize="14sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -54,7 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="220dp"
+        android:layout_marginTop="240dp"
         android:layout_marginEnd="20dp"
         android:hint="Enter Email"
         android:padding="5dp"
@@ -66,68 +66,68 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_baseline_email_24"
+            android:fontFamily="@font/poppins_bold"
             android:importantForAutofill="no"
             android:inputType="textEmailAddress"
             android:textColor="@color/white"
             android:textSize="14sp"
-            tools:ignore="TextContrastCheck"
-            android:fontFamily="@font/poppins_bold"/>
+            tools:ignore="TextContrastCheck" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/idTempPassword"
-        android:layout_below="@id/idTempEmail"
         style="@style/TextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/idTempEmail"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="20dp"
         android:hint="Enter Password"
-        app:passwordToggleEnabled="true"
         android:padding="5dp"
         android:textColorHint="@color/white"
-        app:hintTextColor="@color/white">
+        app:hintTextColor="@color/white"
+        app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/idEditPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_baseline_lock_open_24"
+            android:fontFamily="@font/poppins_bold"
             android:importantForAutofill="no"
             android:inputType="textPassword"
             android:textColor="@color/white"
-            android:textSize="14sp"
-            android:drawableStart="@drawable/ic_baseline_lock_open_24"
-            android:fontFamily="@font/poppins_bold"/>
+            android:textSize="14sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/ConfirmPassword"
-        android:layout_below="@id/idTempPassword"
         style="@style/TextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/idTempPassword"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="20dp"
         android:hint="Confirm your password"
-        app:passwordToggleEnabled="true"
         android:padding="5dp"
         android:textColorHint="@color/white"
-        app:hintTextColor="@color/white">
+        app:hintTextColor="@color/white"
+        app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/idEditConfirmPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_baseline_lock_24"
+            android:fontFamily="@font/poppins_bold"
             android:importantForAutofill="no"
             android:inputType="textPassword"
             android:textColor="@color/white"
-            android:textSize="14sp"
-            android:drawableStart="@drawable/ic_baseline_lock_24"
-            android:fontFamily="@font/poppins_bold"/>
+            android:textSize="14sp" />
 
 
     </com.google.android.material.textfield.TextInputLayout>

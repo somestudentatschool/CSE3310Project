@@ -1,7 +1,10 @@
 package com.example.cse3310project;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +22,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class HomeFragment extends Fragment {
 
+    private String name;
+
     public HomeFragment() {
     }
 
@@ -32,6 +37,7 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         TextView helloTextView = view.findViewById(R.id.helloTextView);
+        TextView verifiedTV = view.findViewById(R.id.verifiedTV);
         Button uploadFromGalleryButton = view.findViewById(R.id.uploadFromGalleryButton);
         Button uploadFromCameraButton = view.findViewById(R.id.uploadFromCameraButton);
 
@@ -47,9 +53,12 @@ public class HomeFragment extends Fragment {
             activity.finish();
         }
 
-        ProfileFragment pf = new ProfileFragment();
-        String name = pf.getProf_username();
-
+        if(!currentUser.isEmailVerified()){
+            verifiedTV.setVisibility(View.VISIBLE);
+        }
+        //stores name on device for homepage, profile reads from DB
+        SharedPreferences mPrefs = getContext().getSharedPreferences("NamePref", 0);
+        name = mPrefs.getString("HomeName", "UserNotFound");
         helloTextView.setText(String.format("Hello, %s!", name));
 
         uploadFromCameraButton.setOnClickListener(view2 -> {
@@ -70,4 +79,6 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
 }
+

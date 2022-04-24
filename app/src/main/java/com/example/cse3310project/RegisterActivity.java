@@ -3,6 +3,7 @@ package com.example.cse3310project;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -112,6 +113,11 @@ public class RegisterActivity extends AppCompatActivity {
                 Toast.makeText(RegisterActivity.this, "Password or username is not greater than 6 characters", Toast.LENGTH_SHORT).show();
                 loadingBar.setVisibility(View.INVISIBLE);
                 //password must be greater than 6 characters, no alphanumeric required
+            }
+            else if(password.length() > 20 || username.length() > 20){
+                Toast.makeText(RegisterActivity.this, "Password or username is greater than 20 characters", Toast.LENGTH_SHORT).show();
+                loadingBar.setVisibility(View.INVISIBLE);
+                //password must be less than 20 characters, no alphanumeric required
             }
             else{
                 Query checkUser = root.orderByChild("username").equalTo(username);

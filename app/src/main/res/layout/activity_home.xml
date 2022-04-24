@@ -7,6 +7,7 @@
     android:background="@drawable/darkhomeback"
     tools:context=".HomeActivity">
 
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"
         android:layout_width="match_parent"
@@ -19,15 +20,15 @@
         app:menu="@menu/bottom_nav"
         tools:layout_editor_absoluteX="0dp" />
 
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="409dp"
-        android:layout_height="729dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="409dp"
+            android:layout_height="729dp"
+            app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    </FrameLayout>
+        </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -119,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
                                                     String currentEmail = ds.child("email").getValue(String.class);
                                                     String currentName = ds.child("fullname").getValue(String.class);
                                                     String currentDob = ds.child("dob").getValue(String.class);
-
+                                                    String currentImageurl = ds.child("imageurl").getValue(String.class);
                                                     if (currentEmail != null) {
                                                         mAuth.signInWithEmailAndPassword(currentEmail, currentPass).addOnCompleteListener(task -> {
                                                             if(task.isSuccessful()){
@@ -132,6 +132,7 @@ public class LoginActivity extends AppCompatActivity {
                                                                 i.putExtra("email", currentEmail);
                                                                 i.putExtra("fullname", currentName);
                                                                 i.putExtra("dob", currentDob);
+                                                                i.putExtra("imageurl", currentImageurl);
                                                                 loggedIn = true;
                                                                 startActivity(i);
                                                                 finish();
