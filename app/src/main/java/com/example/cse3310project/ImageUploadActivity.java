@@ -63,7 +63,7 @@ public class ImageUploadActivity extends AppCompatActivity
                 try {
                     Uri data = result.getData().getData();
                     Bitmap pic = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data); //changes URI to bitmap
-                    pic = centerAndScale(pic);
+                    pic = processImage(pic);
 
                     picView.setImageBitmap(pic); //shows the image uploaded
                     if (!uploadedFirstImage) {
@@ -87,7 +87,7 @@ public class ImageUploadActivity extends AppCompatActivity
             {
                 Bundle data = result.getData().getExtras();
                 Bitmap pic =  (Bitmap) data.get("data");
-                pic = centerAndScale(pic);
+                pic = processImage(pic);
                 picView.setImageBitmap(pic); //shows the image taken
                 if(!takenFirstImage)
                 {
@@ -157,7 +157,7 @@ public class ImageUploadActivity extends AppCompatActivity
         }
     }
 
-    public Bitmap centerAndScale(Bitmap source) {
+    public Bitmap processImage(Bitmap source) {
         int x = 0, y = 0;
         int width = source.getWidth(), height = source.getHeight();
         if(width > height) {
