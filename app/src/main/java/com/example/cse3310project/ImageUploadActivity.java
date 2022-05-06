@@ -25,10 +25,12 @@ import java.nio.ByteOrder;
 
 public class ImageUploadActivity extends AppCompatActivity
 {
+    public static final String PACKAGE_EXTRA = "com.example.cse3310project.PACKAGE_EXTRA";
+    public static final String PACKAGE_EXTRA2 = "com.example.cse3310project.PACKAGE_EXTRA2";
     public static final int GALLERY_CODE = 100;
     public static final int CAMERA_CODE = 101;
 
-    Button galleryButton, cameraButton, home; //take picture button
+    Button galleryButton, cameraButton, descriptionButton, home; //take picture button
     ImageView picView; //image of picture taken
     TextView animal, breed; //for text of animal and breed
     private ActivityResultLauncher<Intent> cameraLauncher, galleryLauncher;
@@ -42,6 +44,7 @@ public class ImageUploadActivity extends AppCompatActivity
         picView = findViewById(R.id.myImage);
         galleryButton = findViewById(R.id.uploadButton);
         cameraButton = findViewById(R.id.pictureButton);
+        descriptionButton = findViewById(R.id.descriptionButton);
         breed = findViewById(R.id.breed);
         animal = findViewById(R.id.animal);
         home = findViewById(R.id.homeButtonCamera);
@@ -216,6 +219,17 @@ public class ImageUploadActivity extends AppCompatActivity
 
             // Releases model resources if no longer used.
             model.close();
+            String breedIn = breed.getText().toString();
+            String typeIn = animal.getText().toString();
+
+            descriptionButton.setOnClickListener(view -> {
+                Intent intent = new Intent(this, AnimalInfo.class);
+                intent.putExtra(PACKAGE_EXTRA, breedIn);
+                intent.putExtra(PACKAGE_EXTRA2, typeIn);
+                startActivity(intent);
+            });
+
+
         } catch (IOException e) {
             System.out.println("Something went wrong with model");
             e.printStackTrace();

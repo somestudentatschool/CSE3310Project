@@ -24,11 +24,11 @@ public class AnimalInfo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_animal_data);
 
-        //Intent intent = getIntent();
-        //String breedString = intent.getStringExtra(ImageUploadActivity.PACKAGE_EXTRA);
-        //String typeString = intent.getStringExtra(ImageUploadActivity.PACKAGE_EXTRA2);
-        String typeString = "Dog";
-        String breedString = "German Shepard";
+        Intent intent = getIntent();
+        String breedString = intent.getStringExtra(ImageUploadActivity.PACKAGE_EXTRA);
+        String typeString = intent.getStringExtra(ImageUploadActivity.PACKAGE_EXTRA2);
+        //String typeString = "Dog";
+        //String breedString = "German Shepard";
         breedInfo = (TextView) findViewById(R.id.breedInfo);
         typeInfo = (TextView) findViewById(R.id.typeInfo);
         descInfo = (TextView) findViewById(R.id.descInfo);
@@ -117,25 +117,29 @@ public class AnimalInfo extends AppCompatActivity {
 */
 
 
-        btn_goAnimalData = findViewById(R.id.btn_goAnimalData);
+//      btn_goAnimalData = findViewById(R.id.btn_goAnimalData);
         btn_goHome = findViewById(R.id.btn_goHome);
 
-
+/*
         btn_goAnimalData.setOnClickListener(v -> {
             //Toast.makeText(AnimalActivity.this, "Viewed", Toast.LENGTH_SHORT).show();
             openAnimalActivity();
         });
+
+ */
         btn_goHome.setOnClickListener(v -> {
             //Toast.makeText(AnimalActivity.this, "Viewed", Toast.LENGTH_SHORT).show();
             openHomeActivity();
         });
 
     }
-
+/*
     private void openAnimalActivity(){
         Intent intent = new Intent(this, AnimalActivity.class);
         startActivity(intent);
     }
+
+ */
     private void openHomeActivity(){
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
