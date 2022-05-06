@@ -1,4 +1,5 @@
 # CSE3310Project
+Github link (For access to any changes in the future): https://github.com/somestudentatschool/CSE3310Project
 First, either clone the repository from GitHub or open the project in Android Studio. 
 
 Then, run the project using the run button in the top right. Make sure to have an Android emulator already installed. 
