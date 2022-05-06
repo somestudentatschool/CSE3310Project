@@ -192,9 +192,21 @@ public class ImageUploadActivity extends AppCompatActivity
                     maxBreed = i; //index of maximum breed percent
                 }
             }
-            String[] animals = {"Dog"}; //will assign more animals as the model is trained
-            String[] breeds = {"Labrador", "Pitbull", "German Shepard", "Chihuahua", "Golden Retriever"}; //same as animals
-            animal.setText(animals[0]);
+            String[] animals = {"Dog", "Cat", "Parrot"};
+            String[] breeds = {"Labrador", "Pitbull", "German Shepard", "Chihuahua", "Golden Retriever", "Bombay", "Sphinx", "Abyssinian", "Macaw", "Cockatoo", "Parakeet"};
+            if(maxBreed < 5)
+            {
+                animal.setText(animals[0]);
+            }
+            else if(maxBreed >= 5 && maxBreed < 8)
+            {
+                animal.setText(animals[1]);
+            }
+            else
+            {
+                animal.setText(animals[2]);
+            }
+
             breed.setText(breeds[maxBreed]);
 
             for(int i = 0; i < breeds.length; i++) //prints confidences into logcat
