@@ -76,7 +76,7 @@ public class AnimalInfo extends AppCompatActivity {
                     "-Fairly friendly and cuddly.";
         }
         if(breedString.equalsIgnoreCase("Abyssinia")){
-            newDesc = "-Low maintenance with a short coat,\n" +
+            newDesc = "-Low maintenance with a short coat.\n" +
                     "-They have problems with their teeth, so brush at least 3 times a week.\n" +
                     "-Prefers daily playtime and clean litter box.";
         }
