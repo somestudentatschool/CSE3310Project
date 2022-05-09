@@ -67,22 +67,33 @@ public class AnimalInfo extends AppCompatActivity {
                     "-Known for barking at strangers and larger dogs, due to their small size.";
         }
         if(breedString.equalsIgnoreCase("Bombay")){
-            newDesc = "";
+            newDesc = "-Playful and curious cats who have a lot of energy and are trainable.\n" +
+                    "-They enjoy puzzle toys and some are fine with a leash.";
         }
         if(breedString.equalsIgnoreCase("Sphinx")){
-            newDesc = "";
+            newDesc = "-Requires weekly baths and can get acne and blackhead if neglected.\n" +
+                    "-Keep them warm and away from direct sunlight.\n" +
+                    "-Fairly friendly and cuddly.";
         }
         if(breedString.equalsIgnoreCase("Abyssinia")){
-            newDesc = "";
+            newDesc = "-Low maintenance with a short coat,\n" +
+                    "-They have problems with their teeth, so brush at least 3 times a week.\n" +
+                    "-Prefers daily playtime and clean litter box.";
         }
         if(breedString.equalsIgnoreCase("Macaws")){
-            newDesc = "";
+            newDesc = "-Cage should be big enough for their tail feather to bend and let down.\n" +
+                    "-Prefer to be in areas where they are seen and close to sunlight.\n" +
+                    "-Feed on figs, nectar and more fat in their diet.";
         }
         if(breedString.equalsIgnoreCase("Cockatoo")){
-            newDesc = "";
+            newDesc = "-They love music, sound (television) and voice interactions.\n" +
+                    "-Best interaction with them is with gentle and subtle movements.\n" +
+                    "-When let out, avoid holes and exposed wires out.";
         }
         if(breedString.equalsIgnoreCase("Parakeet")){
-            newDesc = "";
+            newDesc = "-Enjoys being pet and are highly social.\n" +
+                    "-Having 2 Parakeet's keeps them entertained and occupied when not home.\n" +
+                    "-Are sensitive to sickness and temperature change.";
         }
 
         typeInfo.setText(typeString);
