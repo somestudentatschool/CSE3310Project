@@ -19,4 +19,6 @@ gallery and camera. After choosing the image you wish to be recognized, the mach
 image. After that, you can click a button called description to see a description page of the animal. 
 
 The description page shows their name, breed, and description and takes you back home once the home button is clicked. The database is in the assets older;
-however, the SQLite functions (create table and queries) are not being reflected in the results (still produces the same desired results). ****
+however, the SQLite functions (create table and queries) are not being reflected in the results (still produces the same desired results). 
+
+Animal breeds that are supported: Pitbull, Golden retriever, Labrador, Chihuahua, German Shepard, Sphinx, Bombay, Abyssinian, Macaw, Parakeet, Cockatoo. ****
